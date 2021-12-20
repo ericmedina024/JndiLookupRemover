@@ -1,0 +1,45 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '7.1.1'
+    id 'java'
+}
+
+group 'xyz.ericmedina024'
+version '0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'net.bytebuddy:byte-buddy-dep:1.12.5'
+    testImplementation 'org.apache.logging.log4j:log4j-core:2.14.1'
+    testImplementation 'org.apache.logging.log4j:log4j-api:2.14.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+test {
+    jvmArgs "-javaagent:\"${project.buildDir}\\libs\\${project.name}-${project.version}.jar\""
+    useJUnitPlatform()
+}
+
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
+
+jar {
+    //noinspection GroovyAssignabilityCheck
+    manifest {
+        attributes(
+                'Premain-Class': "${project.group}.jndilookupremover.Main",
+                'Can-Retransform-Classes': 'true'
+        )
+    }
+}
+
+shadowJar {
+    dependsOn build
+    relocate 'net.bytebuddy', "${project.group}.net.bytebuddy"
+    relocate 'org.objectweb.asm', "${project.group}.org.objectweb.asm"
+}
