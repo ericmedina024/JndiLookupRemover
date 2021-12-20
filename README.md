@@ -9,8 +9,8 @@ Download the latest release and add it as a Java agent to your application using
 JndiLookupRemover patches log4j so that JNDI lookups return the static string `!!PREVENTED JNDI LOOKUP!!`. This prevents the log4shell exploit and allows for easy querying for exploit attempts.
 
 ### How it works
-JndiLookupRemover works by replacing the contents of the `lookup` and `convertJndiName` methods of any class which any of the following criteria:
-- Class is named JndiLookup
+JndiLookupRemover works by replacing the contents of the `lookup` and `convertJndiName` methods of any class which match any of the following criteria:
+- Class is named `JndiLookup`
 - Class declares a field named `CONTAINER_JNDI_RESOURCE_PATH_PREFIX`
 
 ### Advantages over other solutions
